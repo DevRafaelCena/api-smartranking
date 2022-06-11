@@ -30,6 +30,18 @@ export class JogadoresService {
         return await this.jogadores;
     }
 
+    async deletarJogador(email): Promise<void>{
+
+        const jogadorEncontrado = await this.jogadores.find(jogador => jogador.email === email);
+
+        if(!jogadorEncontrado){
+            throw new NotFoundException(`Jogador com o email ${email} não encontrado`);
+        }
+
+        this.jogadores = this.jogadores.filter(jogador => jogador.email !== email);
+
+    }
+
     async consultarJogadorPorEmail(email: string): Promise<Jogador>{
 
         const jogadorEncontrado = await this.jogadores.find(jogador => jogador.email === email);
@@ -37,7 +49,7 @@ export class JogadoresService {
         if(!jogadorEncontrado){
             throw new NotFoundException(`Jogador com o email ${email} não encontrado`);
         }
-        
+
         return jogadorEncontrado
         
        
@@ -76,6 +88,8 @@ export class JogadoresService {
         this.logger.log(`Atualizando o jogador ${JSON.stringify(jogadorEncontrado)}`);
 
     }
+
+    
 
     
 
