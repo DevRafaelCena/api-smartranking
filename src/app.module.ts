@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { JogadoresModule } from './jogadores/jogadores.module';
 import { MongooseModule } from '@nestjs/mongoose';
-
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://dbUser:@1q2w3e#@cluster0.lourp.gcp.mongodb.net/smartrankingretryWrites=true&w=majority',
-    { useNewUrlParser: true, useCreateIndex: true, useFindAndModify:false, useUnifiedTopology: true }),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.DATABASE_USER,
+    { useNewUrlParser: true, useUnifiedTopology: true}),
+
     JogadoresModule],
   controllers: [],
   providers: [],
