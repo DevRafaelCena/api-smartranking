@@ -27,7 +27,7 @@ export class CategoriasService {
     }
 
     async consultarTodasCategorias(): Promise<Array<Categoria>>{
-        return this.categoriaModel.find()
+        return this.categoriaModel.find().populate("jogadores").exec()
     }
 
     async consultaCategoriaPorId(categoria:string): Promise<Categoria>{
@@ -49,6 +49,27 @@ export class CategoriasService {
         }
 
         await this.categoriaModel.findOneAndUpdate({categoria},{$set: atualizarCategoriaDto})
+
+    }
+
+    async atribuirCategoriaJogador(params: string[]): Promise<void>{
+
+        const categoria = params['categoria']
+        const idJogador = params['idJogador']
+
+
+        const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec()
+
+        //const jogadorJaCadastrado
+
+        if(!categoriaEncontrada){
+            throw new BadRequestException(`Categoria ${categoria} não cadastrada`)
+        }
+
+        categoriaEncontrada.jogadores.push(idJogador)
+        await this.categoriaModel.findOneAndUpdate({categoria}, {$set: categoriaEncontrada}).exec()
+
+
 
     }
 }
