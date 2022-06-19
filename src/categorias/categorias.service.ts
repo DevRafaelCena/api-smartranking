@@ -64,12 +64,15 @@ export class CategoriasService {
         const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec()
 
         const jogadorJaCadastrado = await this.jogadoresService.consultarJogadorPorId(idJogador)
-
+        
         const jogadorJaCadastradoCategoria = await this.categoriaModel.find({categoria}).where('jogadores').in(idJogador).exec()
-
 
         if(!categoriaEncontrada){
             throw new BadRequestException(`Categoria ${categoria} não cadastrada`)
+        }
+
+        if(jogadorJaCadastradoCategoria.length > 0){
+            throw new BadRequestException(`Jogador já cadastrado na categoria`)
         }
 
         categoriaEncontrada.jogadores.push(idJogador)
