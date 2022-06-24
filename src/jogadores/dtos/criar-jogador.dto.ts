@@ -1,13 +1,13 @@
-import { IsEmail, IsNotEmpty } from 'class-validator'
+import { IsNotEmpty, IsEmail } from 'class-validator'
 
-export class CriarJogadorDto {  
+export class CriarJogadorDto {
 
     @IsNotEmpty()
     readonly telefoneCelular: string;
-
+    
     @IsEmail()
     readonly email: string;
-
+    
     @IsNotEmpty()
-    readonly nome: string; 
+    readonly nome: string;
 }
